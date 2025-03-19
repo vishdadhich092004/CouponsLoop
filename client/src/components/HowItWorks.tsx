@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { CouponDialog } from "@/components/CouponDialog";
 
 export function HowItWorksSection() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const steps = [
     {
       number: "01",
@@ -140,9 +142,20 @@ export function HowItWorksSection() {
             ))}
 
             <motion.div variants={itemVariants}>
-              <Button asChild size="lg" className="mt-6">
-                <Link to="#coupons">Get Your Coupon Now</Link>
+              <Button
+                size="lg"
+                className="mt-6"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Get Your Coupon Now
               </Button>
+              <CouponDialog
+                isOpen={isDialogOpen}
+                onOpenChange={setIsDialogOpen}
+                couponCode="SAVE50NOW"
+                claimedCount={2847}
+                refreshTime="04:59"
+              />
             </motion.div>
           </motion.div>
         </div>

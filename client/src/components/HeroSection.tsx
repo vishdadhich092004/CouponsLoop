@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { CouponDialog } from "@/components/CouponDialog";
 
 export function HeroSection() {
   const containerVariants = {
@@ -23,6 +25,8 @@ export function HeroSection() {
       },
     },
   };
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
     <section className="relative overflow-hidden py-20 md:py-28" id="hero">
@@ -53,8 +57,12 @@ export function HeroSection() {
               className="flex flex-col sm:flex-row gap-3 mt-4"
               variants={itemVariants}
             >
-              <Button asChild size="lg" className="font-medium">
-                <Link to="#coupons">Get Your Coupon</Link>
+              <Button
+                size="lg"
+                className="font-medium"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Get Your Coupon
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link to="#how-it-works">How It Works</Link>
@@ -121,6 +129,13 @@ export function HeroSection() {
           </motion.div>
         </motion.div>
       </div>
+      <CouponDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        couponCode="SAVE25NOW"
+        claimedCount={2500}
+        refreshTime="05:23"
+      />
     </section>
   );
 }

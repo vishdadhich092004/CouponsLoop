@@ -1,9 +1,11 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useState } from "react";
+import { CouponDialog } from "@/components/CouponDialog";
 
 export function CtaSection() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <section id="coupons" className="py-20">
       <div className="container px-4 md:px-6">
@@ -42,11 +44,13 @@ export function CtaSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Button asChild size="lg" className="gap-2 text-lg">
-                <Link to="/get-coupon">
-                  Get Your Coupon
-                  <ArrowRight className="h-5 w-5" />
-                </Link>
+              <Button
+                size="lg"
+                className="gap-2 text-lg"
+                onClick={() => setIsDialogOpen(true)}
+              >
+                Get Your Coupon
+                <ArrowRight className="h-5 w-5" />
               </Button>
             </motion.div>
           </div>
@@ -76,6 +80,13 @@ export function CtaSection() {
           </motion.div>
         </motion.div>
       </div>
+      <CouponDialog
+        isOpen={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        couponCode="SAVE50NOW"
+        claimedCount={2847}
+        refreshTime="04:59"
+      />
     </section>
   );
 }
