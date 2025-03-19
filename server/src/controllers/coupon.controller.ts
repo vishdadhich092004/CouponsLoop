@@ -9,14 +9,27 @@ export const claimCoupon = async (
   req: Request,
   res: Response
 ): Promise<any> => {
+  // Start a MongoDB session for transaction
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
     const userIP = req.ip || req.headers["x-forwarded-for"] || "unknown";
     const sessionId = req.cookies.sessionId || "unknown";
-    if (!sessionId) {
+
+    // Improved validation
+    if (!userIP || userIP === "unknown") {
+      return res.status(400).json({
+        message: "Unable to determine user IP",
+      });
+    }
+
+    if (!sessionId || sessionId === "unknown") {
       return res.status(400).json({
         message: "Session ID is required",
       });
     }
+
     const existingClaim = await UserClaim.findOne({
       $or: [{ ip: userIP }, { sessionId }],
       lastClaimedAt: { $gt: new Date(Date.now() - COOLDOWN_TIME) },
@@ -30,28 +43,38 @@ export const claimCoupon = async (
     const nextCoupon = await Coupon.findOneAndUpdate(
       { status: CouponStatus.AVAILABLE },
       { $set: { status: CouponStatus.CLAIMED } },
-      { new: true }
+      { new: true, session }
     );
     if (!nextCoupon) {
+      await session.abortTransaction();
       return res.status(400).json({
         message: "No available coupons",
       });
     }
-    const userClaim = await UserClaim.create({
-      ip: userIP,
-      sessionId,
-      couponId: new mongoose.Types.ObjectId(nextCoupon._id),
-      claimedAt: new Date(),
-    });
-    await userClaim.save();
+    const userClaim = await UserClaim.create(
+      [
+        {
+          ip: userIP,
+          sessionId,
+          couponId: new mongoose.Types.ObjectId(nextCoupon._id),
+          claimedAt: new Date(),
+          lastClaimedAt: new Date(),
+        },
+      ],
+      { session }
+    );
+    await session.commitTransaction();
     res.status(200).json({
       message: "Coupon claimed successfully",
       coupon: nextCoupon,
     });
   } catch (e) {
+    await session.abortTransaction();
     console.error(e);
     return res.status(500).json({
       message: "Internal server error",
     });
+  } finally {
+    session.endSession();
   }
 };
