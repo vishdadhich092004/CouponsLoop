@@ -61,3 +61,27 @@ export const updateCouponStatus = async (id: string, status: string) => {
   }
   return data;
 };
+
+export const claimCoupon = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/coupons/claim`, {
+    method: "POST",
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
+
+export const initSession = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/session/init`, {
+    method: "POST",
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
