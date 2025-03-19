@@ -9,7 +9,7 @@ const generateToken = (id: string) => {
   });
 };
 
-export const adminLogin = async (req: Request, res: Response) => {
+export const adminLogin = async (req: Request, res: Response): Promise<any> => {
   try {
     const { username, password } = req.body;
     const admin = await Admin.findOne({ username });
@@ -28,7 +28,10 @@ export const adminLogin = async (req: Request, res: Response) => {
   }
 };
 
-export const createAdmin = async (req: Request, res: Response) => {
+export const createAdmin = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
   try {
     const { username, password } = req.body;
     const existingAdmin = await Admin.findOne({ username });
