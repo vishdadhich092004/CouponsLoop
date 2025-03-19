@@ -7,7 +7,8 @@
   "type": "commonjs",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "seed:coupons": "ts-node src/seeds/coupon.seed.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
@@ -21,6 +22,7 @@
     "mongoose": "^8.12.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.6.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",

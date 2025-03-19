@@ -1,7 +1,7 @@
 export enum CouponStatus {
   AVAILABLE = "available",
+  CLAIMED = "claimed",
   EXPIRED = "expired",
-  USED = "used",
 }
 
 export interface ICoupon {

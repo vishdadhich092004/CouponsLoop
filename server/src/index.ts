@@ -3,6 +3,7 @@ import cors from "cors";
 import connectDB from "./configs/db.config";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import allRoutes from "./routes/all.routes";
 dotenv.config();
 const app = express();
 app.use(
@@ -16,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 connectDB();
+
+app.use(allRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hey From CouponsLoop Server ♾️");
