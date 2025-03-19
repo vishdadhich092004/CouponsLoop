@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 connectDB();
 
-app.use(allRoutes);
+app.use("/api", allRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hey From CouponsLoop Server ♾️");

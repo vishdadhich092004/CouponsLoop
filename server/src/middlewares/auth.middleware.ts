@@ -14,23 +14,21 @@ export const protectAdmin = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  let token = req.headers.authorization;
+): Promise<any> => {
+  const token = req.cookies["auth_token"];
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Access Denied. No token" });
   }
-  if (token && token.startsWith("Bearer")) {
-    try {
-      token = token.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-        id: string;
-      };
-      req.admin = await Admin.findById(decoded.id).select("-password");
-      next();
-    } catch (error) {
-      return res.status(401).json({ message: "Not Authorized" });
-    }
-  } else {
-    return res.status(401).json({ message: "Unauthorized, No Token Provided" });
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    ) as IAdmin;
+    req.admin = decoded;
+    next();
+  } catch (error) {
+    console.error(error);
+    return res.status(401).json({ message: "Invalid Token" });
   }
 };
