@@ -83,3 +83,19 @@ export const updateCouponStatus = async (
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const updateCoupon = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { id } = req.params;
+  const { code } = req.body;
+  try {
+    const coupon = await Coupon.findByIdAndUpdate(id, { code }, { new: true });
+    if (!coupon) return res.status(404).json({ message: "Coupon not found" });
+    res.status(200).json({ message: "Coupon updated successfully", coupon });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

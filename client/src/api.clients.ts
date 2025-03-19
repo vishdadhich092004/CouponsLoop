@@ -85,3 +85,28 @@ export const initSession = async () => {
   }
   return data;
 };
+
+export const updateCoupon = async (id: string, code: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/admin/coupons/${id}`, {
+    method: "PUT",
+    credentials: "include",
+    body: JSON.stringify({ code }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
+
+export const claimHistory = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/admin/claim-history`, {
+    credentials: "include",
+    method: "GET",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
