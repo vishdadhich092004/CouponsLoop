@@ -14,11 +14,17 @@ export const claimCoupon = async (
   session.startTransaction();
 
   try {
-    const userIP = req.ip || req.headers["x-forwarded-for"] || "unknown";
+    const userIP = (
+      req.ip ||
+      req.headers["x-forwarded-for"] ||
+      "unknown"
+    ).toString();
     const sessionId = req.cookies.sessionId || "unknown";
 
-    // Improved validation
-    if (!userIP || userIP === "unknown") {
+    // Handle IPv6 loopback address
+    const normalizedIP = userIP === "::1" ? "127.0.0.1" : userIP;
+
+    if (!normalizedIP || normalizedIP === "unknown") {
       return res.status(400).json({
         message: "Unable to determine user IP",
       });
@@ -31,7 +37,7 @@ export const claimCoupon = async (
     }
 
     const existingClaim = await UserClaim.findOne({
-      $or: [{ ip: userIP }, { sessionId }],
+      $or: [{ ip: normalizedIP }, { sessionId }],
       lastClaimedAt: { $gt: new Date(Date.now() - COOLDOWN_TIME) },
     });
     if (existingClaim) {
@@ -54,7 +60,7 @@ export const claimCoupon = async (
     const userClaim = await UserClaim.create(
       [
         {
-          ip: userIP,
+          ip: normalizedIP,
           sessionId,
           couponId: new mongoose.Types.ObjectId(nextCoupon._id),
           claimedAt: new Date(),
@@ -66,6 +72,7 @@ export const claimCoupon = async (
     await session.commitTransaction();
     res.status(200).json({
       message: "Coupon claimed successfully",
+      userClaim,
       coupon: nextCoupon,
     });
   } catch (e) {
