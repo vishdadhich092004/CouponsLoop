@@ -17,7 +17,7 @@ export const initSession = async (
       maxAge: COOKIE_MAX_AGE,
       path: "/",
     });
-
+    console.log("Session initialized", sessionId);
     // Verify cookie was set
     if (!res.headersSent) {
       res.json({
