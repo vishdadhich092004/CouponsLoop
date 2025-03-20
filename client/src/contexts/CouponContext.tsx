@@ -11,13 +11,13 @@ interface CouponContextType {
   couponData: {
     coupon: ICoupon;
     message: string;
-    userClaim: IUserClaim;
+    userClaim: IUserClaim[];
   } | null;
   setCouponData: (
     data: {
       coupon: ICoupon;
       message: string;
-      userClaim: IUserClaim;
+      userClaim: IUserClaim[];
     } | null
   ) => void;
 }

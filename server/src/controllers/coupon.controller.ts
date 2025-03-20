@@ -50,7 +50,13 @@ export const claimCoupon = async (
     }
     const nextCoupon = await Coupon.findOneAndUpdate(
       { status: CouponStatus.AVAILABLE },
-      { $set: { status: CouponStatus.CLAIMED } },
+      {
+        $set: {
+          status: CouponStatus.CLAIMED,
+          claimedBy: normalizedIP,
+          claimedAt: new Date(),
+        },
+      },
       { new: true, session }
     );
     if (!nextCoupon) {
@@ -60,13 +66,15 @@ export const claimCoupon = async (
       });
     }
     const userClaim = await UserClaim.create(
-      {
-        ip: normalizedIP,
-        sessionId,
-        couponId: new mongoose.Types.ObjectId(nextCoupon._id),
-        claimedAt: new Date(),
-        lastClaimedAt: new Date(),
-      },
+      [
+        {
+          ip: normalizedIP,
+          sessionId,
+          couponId: nextCoupon._id,
+          claimedAt: new Date(),
+          lastClaimedAt: new Date(),
+        },
+      ],
       { session }
     );
     await session.commitTransaction();

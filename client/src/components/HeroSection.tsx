@@ -128,10 +128,16 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                <p className="text-sm font-medium">Latest Coupon</p>
-                <p className="text-xl font-bold text-primary">
-                  {couponData?.coupon.code}
-                </p>
+                {couponData?.coupon.code ? (
+                  <>
+                    <p className="text-sm font-medium">Latest Coupon</p>
+                    <p className="text-xl font-bold text-primary">
+                      {couponData?.coupon.code}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-sm font-medium">Claim your coupon now</p>
+                )}
               </motion.div>
               <motion.div
                 className="absolute bottom-4 left-4 bg-white dark:bg-gray-950 p-3 rounded-lg shadow-lg z-20"
@@ -145,7 +151,7 @@ export function HeroSection() {
                     <p className="text-xl font-bold">{timeLeft}</p>
                   </>
                 ) : (
-                  <p className="text-sm font-medium">You have no coupon</p>
+                  <p className="text-sm font-medium">Claim your coupon now</p>
                 )}
               </motion.div>
             </div>

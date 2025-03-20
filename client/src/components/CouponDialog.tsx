@@ -24,7 +24,7 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !couponData) {
       const fetchCoupon = async () => {
         try {
           const data = await claimCoupon();
@@ -37,7 +37,7 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
       };
       fetchCoupon();
     }
-  }, [isOpen, setCouponData]);
+  }, [isOpen, setCouponData, couponData]);
 
   const handleCopyClick = async () => {
     if (!couponData?.coupon) return;
@@ -46,6 +46,15 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
+  const [timeLeft, setTimeLeft] = useState(
+    couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
+  );
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(couponLeftTime(couponData?.userClaim || []));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [couponData?.userClaim]);
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -87,7 +96,7 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
             </div>
             <div className="flex justify-between text-sm text-muted-foreground">
               <div>🎉 {1200}+ people claimed today</div>
-              <div>⏰ Refreshes in {couponLeftTime(couponData.userClaim)}</div>
+              <div>⏰ Refreshes in {timeLeft}</div>
             </div>
           </>
         ) : (
