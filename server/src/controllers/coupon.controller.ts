@@ -39,11 +39,13 @@ export const claimCoupon = async (
     const existingClaim = await UserClaim.findOne({
       $or: [{ ip: normalizedIP }, { sessionId }],
       lastClaimedAt: { $gt: new Date(Date.now() - COOLDOWN_TIME) },
-    });
+    }).populate("couponId");
     if (existingClaim) {
-      return res.status(400).json({
+      return res.status(200).json({
         message:
           "You have claimed the coupon recently. Try again after 24 hours.",
+        userClaim: existingClaim,
+        coupon: existingClaim.couponId,
       });
     }
     const nextCoupon = await Coupon.findOneAndUpdate(
@@ -58,15 +60,13 @@ export const claimCoupon = async (
       });
     }
     const userClaim = await UserClaim.create(
-      [
-        {
-          ip: normalizedIP,
-          sessionId,
-          couponId: new mongoose.Types.ObjectId(nextCoupon._id),
-          claimedAt: new Date(),
-          lastClaimedAt: new Date(),
-        },
-      ],
+      {
+        ip: normalizedIP,
+        sessionId,
+        couponId: new mongoose.Types.ObjectId(nextCoupon._id),
+        claimedAt: new Date(),
+        lastClaimedAt: new Date(),
+      },
       { session }
     );
     await session.commitTransaction();

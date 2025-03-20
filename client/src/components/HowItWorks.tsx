@@ -152,9 +152,6 @@ export function HowItWorksSection() {
               <CouponDialog
                 isOpen={isDialogOpen}
                 onOpenChange={setIsDialogOpen}
-                couponCode="SAVE50NOW"
-                claimedCount={2847}
-                refreshTime="04:59"
               />
             </motion.div>
           </motion.div>

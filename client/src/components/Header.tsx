@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { ChevronRight, Menu } from "lucide-react";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -118,7 +118,12 @@ export function Header() {
         <div className="flex items-center gap-4">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button asChild className="hidden md:inline-flex">
-              <Link to="/admin">Admin Login</Link>
+              <Link to="/admin">
+                Admin{" "}
+                <span className="text-xs">
+                  <ChevronRight />
+                </span>
+              </Link>
             </Button>
           </motion.div>
           <Sheet>
@@ -129,7 +134,7 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <nav className="flex flex-col gap-4 mt-8">
+              <nav className="flex flex-col gap-4 mt-8 px-4">
                 <Link
                   to="#features"
                   className="text-sm font-medium hover:text-primary"
@@ -155,7 +160,12 @@ export function Header() {
                   Contact
                 </Link>
                 <Button asChild className="mt-4">
-                  <Link to="/admin">Admin Login</Link>
+                  <Link to="/admin">
+                    Admin{" "}
+                    <span className="text-xs">
+                      <ChevronRight />
+                    </span>
+                  </Link>
                 </Button>
               </nav>
             </SheetContent>

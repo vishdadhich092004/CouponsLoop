@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CouponDialog } from "@/components/CouponDialog";
+import { useCoupon } from "@/contexts/CouponContext";
+import { couponLeftTime } from "@/utils/coupon.left.time";
 
 export function HeroSection() {
   const containerVariants = {
@@ -27,6 +29,19 @@ export function HeroSection() {
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { couponData } = useCoupon();
+  const [timeLeft, setTimeLeft] = useState(
+    couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
+  );
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(
+        couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
+      );
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [couponData?.userClaim]);
 
   return (
     <section className="relative overflow-hidden py-20 md:py-28" id="hero">
@@ -114,7 +129,9 @@ export function HeroSection() {
                 transition={{ delay: 0.5 }}
               >
                 <p className="text-sm font-medium">Latest Coupon</p>
-                <p className="text-xl font-bold text-primary">SAVE25</p>
+                <p className="text-xl font-bold text-primary">
+                  {couponData?.coupon.code}
+                </p>
               </motion.div>
               <motion.div
                 className="absolute bottom-4 left-4 bg-white dark:bg-gray-950 p-3 rounded-lg shadow-lg z-20"
@@ -122,20 +139,20 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                <p className="text-sm font-medium">Next refresh in</p>
-                <p className="text-xl font-bold">05:23</p>
+                {couponData?.coupon.code ? (
+                  <>
+                    <p className="text-sm font-medium">Next refresh in</p>
+                    <p className="text-xl font-bold">{timeLeft}</p>
+                  </>
+                ) : (
+                  <p className="text-sm font-medium">You have no coupon</p>
+                )}
               </motion.div>
             </div>
           </motion.div>
         </motion.div>
       </div>
-      <CouponDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        couponCode="SAVE25NOW"
-        claimedCount={2500}
-        refreshTime="05:23"
-      />
+      <CouponDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </section>
   );
 }

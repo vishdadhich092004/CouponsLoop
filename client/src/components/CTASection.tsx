@@ -80,13 +80,7 @@ export function CtaSection() {
           </motion.div>
         </motion.div>
       </div>
-      <CouponDialog
-        isOpen={isDialogOpen}
-        onOpenChange={setIsDialogOpen}
-        couponCode="SAVE50NOW"
-        claimedCount={2847}
-        refreshTime="04:59"
-      />
+      <CouponDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />
     </section>
   );
 }

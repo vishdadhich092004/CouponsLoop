@@ -1,10 +1,19 @@
+import { Button } from "@/components/ui/button";
 import { LoginForm } from "../components/LoginForm";
-
+import { useNavigate } from "react-router-dom";
 function AdminLogin() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen flex">
       {/* Left side - Login Form */}
-      <div className="w-1/2 flex flex-col items-center justify-center px-8 bg-white">
+      <div className="w-1/2 flex flex-col items-center justify-center px-8 bg-white relative">
+        <Button
+          variant="ghost"
+          className="absolute top-4 left-4"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </Button>
         <div className="w-full max-w-md space-y-8 ">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">

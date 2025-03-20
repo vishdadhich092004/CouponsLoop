@@ -9,10 +9,11 @@ const generateCoupons = async (count: number) => {
   try {
     await mongoose.connect(process.env.MONGODB_URI as string);
     console.log("Connected to MongoDB");
+    await Coupon.deleteMany();
 
     const coupons = Array.from({ length: count }).map(() => ({
       // Random Coupon Codes
-      code: faker.string.alphanumeric(10).toUpperCase(),
+      code: faker.string.alphanumeric(6).toUpperCase(),
       status: CouponStatus.AVAILABLE,
     }));
 

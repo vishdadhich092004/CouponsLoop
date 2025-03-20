@@ -52,14 +52,14 @@ export function StatsSection() {
   const testimonials = [
     {
       quote:
-        "I saved over $50 on my last online shopping spree thanks to CouponsLoop!",
-      author: "Sarah J.",
+        "I saved over ₹500 on my last online shopping spree thanks to CouponsLoop!",
+      author: "Ayush Kumar",
       role: "Regular User",
     },
     {
       quote:
         "The round-robin system is genius. I always get fresh coupons that actually work.",
-      author: "Michael T.",
+      author: "Harshit Singh",
       role: "Frequent Shopper",
     },
   ];
