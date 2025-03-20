@@ -4,16 +4,24 @@ dotenv.config();
 const MONGODB_URI = process.env.MONGODB_URI as string;
 
 const connectDB = async () => {
-  mongoose
-    .connect(MONGODB_URI)
-    .then(() => {
-      console.log("Connected to MongoDB");
-    })
-    .catch((err) => {
-      console.log("Error connecting to MongoDB");
-      console.log(err);
-      process.exit(1);
+  try {
+    const conn = await mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: 60000, // Increase timeout to 60 seconds
+      socketTimeoutMS: 45000, // Socket timeout
     });
+
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+
+    // Add error handler for after initial connection
+    mongoose.connection.on("error", (err) => {
+      console.error("MongoDB connection error:", err);
+    });
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    // Log more details about the connection attempt
+    console.log("MongoDB URI:", process.env.MONGODB_URI?.split("@")[1]); // Log URI without credentials
+    process.exit(1);
+  }
 };
 
 export default connectDB;
