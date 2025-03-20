@@ -100,6 +100,9 @@ export const updateCouponStatus = async (id: string, status: string) => {
     `${API_BASE_URL}/api/admin/coupons/${id}/status`,
     {
       method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
       credentials: "include",
       body: JSON.stringify({ status }),
     }

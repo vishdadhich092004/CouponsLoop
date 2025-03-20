@@ -9,7 +9,7 @@ const couponSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["available", "expired", "used"],
+      enum: ["available", "expired", "claimed"],
       default: "available",
     },
     claimedBy: {

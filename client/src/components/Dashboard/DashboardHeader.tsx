@@ -26,7 +26,7 @@ export function DashboardHeader() {
       </Sheet>
       <div className="ml-auto flex items-center gap-4">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-full bg-accent" />
+          {/* <div className="h-8 w-8 rounded-full bg-accent" /> */}
           <div>
             <p className="text-sm font-medium">{admin?.username}</p>
           </div>
