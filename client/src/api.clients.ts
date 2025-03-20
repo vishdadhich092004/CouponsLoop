@@ -1,5 +1,16 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
+export const initSession = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/session/init`, {
+    method: "POST",
+    credentials: "include",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
 export const adminLogin = async (username: string, password: string) => {
   const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
     method: "POST",
@@ -8,6 +19,18 @@ export const adminLogin = async (username: string, password: string) => {
     },
     credentials: "include",
     body: JSON.stringify({ username, password }),
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
+
+export const claimCoupon = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/coupons/claim`, {
+    method: "POST",
+    credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
@@ -66,30 +89,6 @@ export const updateCouponStatus = async (id: string, status: string) => {
     method: "PUT",
     credentials: "include",
     body: JSON.stringify({ status }),
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-  return data;
-};
-
-export const claimCoupon = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/coupons/claim`, {
-    method: "POST",
-    credentials: "include",
-  });
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data.message);
-  }
-  return data;
-};
-
-export const initSession = async () => {
-  const response = await fetch(`${API_BASE_URL}/api/session/init`, {
-    method: "POST",
-    credentials: "include",
   });
   const data = await response.json();
   if (!response.ok) {
