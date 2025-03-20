@@ -9,26 +9,16 @@ import AdminLayout from "./layouts/AdminLayout";
 import { ProtectedAdminRoute } from "./components/ProtectedAdminRoute";
 import UserLayout from "./layouts/UserLayout";
 import { useEffect, useState } from "react";
-import Cookies from "js-cookie";
+import { initSession } from "./api.clients";
 
 function App() {
   const [isSessionInitialized, setIsSessionInitialized] = useState(false);
   const [sessionError, setSessionError] = useState<Error | null>(null);
 
   useEffect(() => {
-    const initializeSession = () => {
+    const initializeSession = async () => {
       try {
-        // Generate session ID client-side
-        const sessionId = crypto.randomUUID();
-
-        // Set cookie directly in the browser
-        Cookies.set("sessionId", sessionId, {
-          secure: import.meta.env.PROD,
-          sameSite: "Lax",
-          expires: 365,
-          path: "/",
-        });
-
+        await initSession();
         setIsSessionInitialized(true);
       } catch (error) {
         console.error("Session initialization failed:", error);
