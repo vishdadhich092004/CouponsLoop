@@ -16,6 +16,18 @@ export const adminLogin = async (username: string, password: string) => {
   return data;
 };
 
+export const validateAdmin = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/admin/validate-admin`, {
+    credentials: "include",
+    method: "GET",
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.message);
+  }
+  return data;
+};
+
 export const getAllCoupons = async () => {
   const response = await fetch(`${API_BASE_URL}/api/admin/coupons`, {
     credentials: "include",

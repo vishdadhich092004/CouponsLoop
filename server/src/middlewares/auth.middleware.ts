@@ -5,7 +5,11 @@ import { IAdmin } from "../shared/types";
 declare global {
   namespace Express {
     interface Request {
-      admin: IAdmin | null;
+      admin: {
+        id: string;
+        iat: number;
+        exp: number;
+      };
     }
   }
 }
@@ -21,10 +25,11 @@ export const protectAdmin = async (
   }
 
   try {
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET_KEY as string
-    ) as IAdmin;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as {
+      id: string;
+      iat: number;
+      exp: number;
+    };
     req.admin = decoded;
     next();
   } catch (error) {

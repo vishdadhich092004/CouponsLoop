@@ -1,7 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { adminLogin } from "../api.clients";
-
 interface LoginFormData {
   username: string;
   password: string;
@@ -15,11 +14,13 @@ export function LoginForm() {
     },
   });
 
+  const queryClient = useQueryClient();
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginFormData) =>
       adminLogin(credentials.username, credentials.password),
     onSuccess: (data) => {
       console.log("Login successful", data);
+      queryClient.invalidateQueries({ queryKey: ["validate-admin"] });
     },
     onError: (error) => {
       console.error("Login failed", error);

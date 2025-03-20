@@ -5,11 +5,10 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CouponProvider } from "./contexts/CouponContext";
 import { initSession } from "./api.clients.ts";
-
+import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 // Add initialization function
 const initializeApp = async () => {
   if (!sessionStorage.getItem("session")) {
-    // or whatever check you use for session
     await initSession();
   }
 };
@@ -28,7 +27,9 @@ initializeApp().then(() => {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <CouponProvider>
-          <App />
+          <AdminAuthProvider>
+            <App />
+          </AdminAuthProvider>
         </CouponProvider>
       </QueryClientProvider>
     </StrictMode>

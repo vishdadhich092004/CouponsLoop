@@ -19,7 +19,7 @@ export const adminLogin = async (req: Request, res: Response): Promise<any> => {
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
-    res.cookie("auth_token", generateToken(admin._id), {
+    res.cookie("auth_token", generateToken(admin._id.toString()), {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       maxAge: 1 * 24 * 60 * 60 * 1000,
@@ -69,6 +69,20 @@ export const claimHistory = async (
   try {
     const claims = await UserClaim.find({});
     res.status(200).json({ claims });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+export const validateAdmin = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const { admin } = req;
+    if (!admin) return res.status(401).json({ message: "Invalid credentials" });
+    const adminUser = await Admin.findById(admin.id);
+    res.status(200).json({ admin: adminUser });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
