@@ -1,9 +1,8 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { CouponDialog } from "@/components/CouponDialog";
+import { cn } from "@/lib/utils";
 
 export function HowItWorksSection() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -56,8 +55,20 @@ export function HowItWorksSection() {
   };
 
   return (
-    <section id="how-it-works" className="py-20">
-      <div className="container px-4 md:px-6">
+    <section id="how-it-works" className="py-20 relative">
+      {/* Grid background */}
+      <div
+        className={cn(
+          "absolute inset-0",
+          "[background-size:40px_40px]",
+          "[background-image:linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)]",
+          "dark:[background-image:linear-gradient(to_right,#262626_1px,transparent_1px),linear-gradient(to_bottom,#262626_1px,transparent_1px)]"
+        )}
+      />
+      {/* Radial gradient overlay */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+
+      <div className="container px-4 md:px-6 relative z-10">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}

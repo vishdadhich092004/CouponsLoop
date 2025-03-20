@@ -37,6 +37,33 @@ export function CouponProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (couponData) {
       localStorage.setItem("couponData", JSON.stringify(couponData));
+
+      // Get the most recent claim time
+      const latestClaim = couponData.userClaim[couponData.userClaim.length - 1];
+      if (latestClaim) {
+        const claimTime = new Date(latestClaim.lastClaimedAt).getTime();
+        const expirationTime = claimTime + 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+        // Check expiration every minute
+        const checkExpiration = () => {
+          const now = new Date().getTime();
+          if (now > expirationTime) {
+            setCouponData(null);
+            localStorage.removeItem("couponData");
+          }
+        };
+
+        // Initial check
+        checkExpiration();
+
+        // Set up interval to check every minute
+        const intervalId = setInterval(checkExpiration, 60 * 1000); // 60 seconds * 1000 milliseconds
+
+        // Cleanup interval on unmount or when couponData changes
+        return () => {
+          clearInterval(intervalId);
+        };
+      }
     } else {
       localStorage.removeItem("couponData");
     }

@@ -1,8 +1,7 @@
-"use client";
-
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, ShoppingBag, Store, Award } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function StatsSection() {
   const stats = [
@@ -65,8 +64,21 @@ export function StatsSection() {
   ];
 
   return (
-    <section id="testimonials" className="py-20 bg-muted/50">
-      <div className="container px-4 md:px-6">
+    <section id="testimonials" className="relative py-20">
+      {/* Dot pattern background */}
+      <div
+        className={cn(
+          "absolute inset-0",
+          "[background-size:20px_20px]",
+          "[background-image:radial-gradient(#d4d4d4_1px,transparent_1px)]",
+          "dark:[background-image:radial-gradient(#404040_1px,transparent_1px)]"
+        )}
+      />
+      {/* Radial gradient overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+
+      {/* Main content */}
+      <div className="container relative z-10 px-4 md:px-6">
         <motion.div
           className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}

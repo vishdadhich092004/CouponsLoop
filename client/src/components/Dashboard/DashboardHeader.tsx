@@ -1,11 +1,10 @@
-"use client";
-
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./Sidebar";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export function DashboardHeader() {
   const [open, setOpen] = useState(false);
@@ -25,6 +24,7 @@ export function DashboardHeader() {
         </SheetContent>
       </Sheet>
       <div className="ml-auto flex items-center gap-4">
+        <ModeToggle />
         <div className="flex items-center gap-2">
           {/* <div className="h-8 w-8 rounded-full bg-accent" /> */}
           <div>

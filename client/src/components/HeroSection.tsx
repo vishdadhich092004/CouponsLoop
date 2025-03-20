@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { CouponDialog } from "@/components/CouponDialog";
 import { useCoupon } from "@/contexts/CouponContext";
 import { couponLeftTime } from "@/utils/coupon.left.time";
-
+import { BackgroundBeams } from "./ui/background-beams";
 export function HeroSection() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -159,6 +159,7 @@ export function HeroSection() {
         </motion.div>
       </div>
       <CouponDialog isOpen={isDialogOpen} onOpenChange={setIsDialogOpen} />
+      <BackgroundBeams />
     </section>
   );
 }

@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronRight, Menu } from "lucide-react";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { ModeToggle } from "@/components/mode-toggle";
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAdminAuth();
@@ -49,7 +51,7 @@ export function Header() {
               xmlns="http://www.w3.org/2000/svg"
               x="0px"
               y="0px"
-              className="w-10 h-10 dark:bg-white bg-black"
+              className="w-10 h-10 dark:bg-white "
               viewBox="0 0 489.875 489.875"
             >
               <g>
@@ -124,6 +126,7 @@ export function Header() {
           </motion.div>
         </nav>
         <div className="flex items-center gap-4">
+          <ModeToggle />
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button asChild className="hidden md:inline-flex">
               <Button onClick={handleAdminLogin}>

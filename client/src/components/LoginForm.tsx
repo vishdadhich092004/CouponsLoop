@@ -6,7 +6,6 @@ import { Label } from "./ui/label";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { EyeOff, Eye } from "lucide-react";
-import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import { Button } from "./ui/button";
 
 interface LoginFormData {
@@ -16,7 +15,6 @@ interface LoginFormData {
 
 export function LoginForm() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAdminAuth();
   const [showPassword, setShowPassword] = useState(false);
   const loginFormData = useForm<LoginFormData>({
     defaultValues: {
