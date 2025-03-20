@@ -30,15 +30,14 @@ export function HeroSection() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { couponData } = useCoupon();
-  const [timeLeft, setTimeLeft] = useState(
-    couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
-  );
+  const [timeLeft, setTimeLeft] = useState("00:00:00");
 
   useEffect(() => {
+    if (!couponData?.userClaim?.length) return;
+
+    setTimeLeft(couponLeftTime(couponData.userClaim));
     const timer = setInterval(() => {
-      setTimeLeft(
-        couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
-      );
+      setTimeLeft(couponLeftTime(couponData.userClaim));
     }, 1000);
 
     return () => clearInterval(timer);
@@ -129,11 +128,11 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
               >
-                {couponData?.coupon.code ? (
+                {couponData?.coupon?.code ? (
                   <>
                     <p className="text-sm font-medium">Latest Coupon</p>
                     <p className="text-xl font-bold text-primary">
-                      {couponData?.coupon.code}
+                      {couponData.coupon.code}
                     </p>
                   </>
                 ) : (
@@ -146,7 +145,7 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                {couponData?.coupon.code ? (
+                {couponData?.userClaim?.length ? (
                   <>
                     <p className="text-sm font-medium">Next refresh in</p>
                     <p className="text-xl font-bold">{timeLeft}</p>

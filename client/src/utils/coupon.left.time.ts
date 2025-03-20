@@ -1,6 +1,8 @@
-import { IUserClaim } from "../../../server/src/shared/types";
+import { IUserClaim } from "@/types/types";
 
 export const couponLeftTime = (userClaim: IUserClaim[]) => {
+  if (!userClaim?.length) return "00:00:00";
+
   const now = new Date();
   const endDate = new Date(userClaim[0].lastClaimedAt);
   endDate.setHours(endDate.getHours() + 24);

@@ -11,9 +11,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const initializeApp = async () => {
   try {
-    if (!sessionStorage.getItem("session")) {
-      await initSession();
-    }
+    await initSession();
   } catch (error) {
     console.error("Failed to initialize session:", error);
   }
@@ -22,7 +20,7 @@ const initializeApp = async () => {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 0,
+      retry: 1,
     },
   },
 });

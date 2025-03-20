@@ -27,9 +27,16 @@ const CouponContext = createContext<CouponContextType | undefined>(undefined);
 export function CouponProvider({ children }: { children: ReactNode }) {
   const [couponData, setCouponData] = useState<CouponContextType["couponData"]>(
     () => {
-      // Initialize from localStorage on component mount
-      const savedCoupon = localStorage.getItem("couponData");
-      return savedCoupon ? JSON.parse(savedCoupon) : null;
+      try {
+        // Initialize from localStorage on component mount
+        const savedCoupon = localStorage.getItem("couponData");
+        return savedCoupon ? JSON.parse(savedCoupon) : null;
+      } catch (error) {
+        // If there's any error parsing the JSON, return null
+        console.warn("Error parsing coupon data from localStorage:", error);
+        localStorage.removeItem("couponData"); // Clean up invalid data
+        return null;
+      }
     }
   );
 
