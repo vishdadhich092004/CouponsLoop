@@ -7,8 +7,7 @@ declare global {
     interface Request {
       admin: {
         id: string;
-        iat: number;
-        exp: number;
+        sessionId: string;
       };
     }
   }
@@ -27,8 +26,7 @@ export const protectAdmin = async (
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as {
       id: string;
-      iat: number;
-      exp: number;
+      sessionId: string;
     };
     req.admin = decoded;
     next();
