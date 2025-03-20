@@ -44,7 +44,7 @@ export function Footer() {
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
-                className="w-10 h-10 text-black"
+                className="w-10 h-10 dark:bg-white bg-black"
                 viewBox="0 0 489.875 489.875"
               >
                 <g>

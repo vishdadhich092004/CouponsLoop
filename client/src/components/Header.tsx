@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ export function Header() {
               xmlns="http://www.w3.org/2000/svg"
               x="0px"
               y="0px"
-              className="w-10 h-10 text-black"
+              className="w-10 h-10 dark:bg-white bg-black"
               viewBox="0 0 489.875 489.875"
             >
               <g>
