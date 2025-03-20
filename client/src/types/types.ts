@@ -31,3 +31,10 @@ export interface IAdmin {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface ISession {
+  _id: string;
+  sessionId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
