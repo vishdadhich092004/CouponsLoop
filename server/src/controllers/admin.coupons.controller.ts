@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Coupon from "../models/Coupon";
 import { CouponStatus } from "../shared/types";
 import { faker } from "@faker-js/faker";
+import UserClaim from "../models/UserClaim";
 
 export const getAllCoupons = async (
   req: Request,
@@ -16,6 +17,7 @@ export const getAllCoupons = async (
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const getCouponById = async (
   req: Request,
   res: Response
@@ -38,7 +40,7 @@ export const addCoupon = async (req: Request, res: Response): Promise<any> => {
     if (existingCoupon)
       return res.status(400).json({ message: "Coupon already exists" });
     const newCoupon = new Coupon({
-      code: code.toUpperCase() || faker.string.alphanumeric(10).toUpperCase(),
+      code: code?.toUpperCase() || faker.string.alphanumeric(6).toUpperCase(),
       status: CouponStatus.AVAILABLE,
       claimedAt: null,
       claimedBy: null,
@@ -91,9 +93,26 @@ export const updateCoupon = async (
   const { id } = req.params;
   const { code } = req.body;
   try {
-    const coupon = await Coupon.findByIdAndUpdate(id, { code }, { new: true });
+    const coupon = await Coupon.findByIdAndUpdate(
+      id,
+      { code: code.toUpperCase() },
+      { new: true }
+    );
     if (!coupon) return res.status(404).json({ message: "Coupon not found" });
     res.status(200).json({ message: "Coupon updated successfully", coupon });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const claimHistory = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  try {
+    const claims = await UserClaim.find({});
+    res.status(200).json(claims);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

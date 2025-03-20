@@ -3,7 +3,6 @@ import Admin from "../models/Admin";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IAdmin } from "../shared/types";
-import UserClaim from "../models/UserClaim";
 
 const generateToken = (id: string) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY as string, {
@@ -58,22 +57,19 @@ export const adminLogout = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  res.clearCookie("auth_token");
-  res.status(200).json({ message: "Admin logged out successfully" });
-};
-
-export const claimHistory = async (
-  req: Request,
-  res: Response
-): Promise<any> => {
   try {
-    const claims = await UserClaim.find({});
-    res.status(200).json({ claims });
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Admin logged out successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 export const validateAdmin = async (
   req: Request,
   res: Response

@@ -6,6 +6,8 @@ import { Label } from "./ui/label";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { EyeOff, Eye } from "lucide-react";
+import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { Button } from "./ui/button";
 
 interface LoginFormData {
   username: string;
@@ -14,6 +16,7 @@ interface LoginFormData {
 
 export function LoginForm() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAdminAuth();
   const [showPassword, setShowPassword] = useState(false);
   const loginFormData = useForm<LoginFormData>({
     defaultValues: {
@@ -26,9 +29,10 @@ export function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginFormData) =>
       adminLogin(credentials.username, credentials.password),
-    onSuccess: () => {
-      navigate("/dashboard");
-      queryClient.invalidateQueries({ queryKey: ["validate-admin"] });
+    onSuccess: async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await queryClient.invalidateQueries({ queryKey: ["validate-admin"] });
+      navigate("/admin/dashboard");
     },
     onError: (error) => {
       console.error("Login failed", error);
@@ -46,7 +50,7 @@ export function LoginForm() {
         <div>
           <Label
             htmlFor="username"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-black dark:text-gray-200"
           >
             Username
           </Label>
@@ -54,7 +58,7 @@ export function LoginForm() {
             id="username"
             type="text"
             required
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 bg-white"
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:border-gray-600 dark:bg-black/50 dark:text-white"
             placeholder="Username"
             {...loginFormData.register("username")}
           />
@@ -63,7 +67,7 @@ export function LoginForm() {
         <div>
           <Label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm font-medium text-black dark:text-gray-200"
           >
             Password
           </Label>
@@ -72,7 +76,7 @@ export function LoginForm() {
               id="password"
               type={showPassword ? "text" : "password"}
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 bg-white"
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-500 focus:border-gray-500 dark:border-gray-600 dark:bg-black/50  dark:text-white"
               placeholder="Password"
               {...loginFormData.register("password")}
             />
@@ -82,22 +86,23 @@ export function LoginForm() {
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <Eye className="h-5 w-5 text-gray-500" />
+                <Eye className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               ) : (
-                <EyeOff className="h-5 w-5 text-gray-500" />
+                <EyeOff className="h-5 w-5 text-gray-500 dark:text-gray-400" />
               )}
             </button>
           </div>
         </div>
       </div>
 
-      <button
+      <Button
         type="submit"
+        variant="ghost"
         disabled={loginMutation.isPending}
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white dark:bg-white dark:text-black bg-black hover:bg-gray-800 dark:hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50"
       >
         {loginMutation.isPending ? "Logging in..." : "Login"}
-      </button>
+      </Button>
 
       {loginMutation.isError && (
         <p className="mt-2 text-sm text-red-600">

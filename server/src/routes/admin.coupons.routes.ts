@@ -5,14 +5,16 @@ import {
   getCouponById,
   updateCouponStatus,
   updateCoupon,
+  claimHistory,
 } from "../controllers/admin.coupons.controller";
 
 const router = express.Router();
 
 router.get("/", getAllCoupons);
+router.get("/claim-history", claimHistory);
+router.post("/", addCoupon);
 router.get("/:id", getCouponById);
 router.put("/:id", updateCoupon);
-router.post("/", addCoupon);
-router.put("/:id", updateCouponStatus);
+router.put("/:id/status", updateCouponStatus);
 
 export default router;

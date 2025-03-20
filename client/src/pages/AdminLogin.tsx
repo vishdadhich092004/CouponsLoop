@@ -6,31 +6,31 @@ import { AlertTriangle } from "lucide-react";
 function AdminLogin() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-      <div className="w-full max-w-6xl bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50 dark:bg-black/10">
+      <div className="w-full max-w-6xl bg-white dark:bg-black/80 rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
         {/* Left side - Login Form Card */}
         <div className="w-full md:w-[45%] p-8 flex flex-col">
           <Button
             variant="ghost"
             className="mb-6 self-start"
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
           >
             ← Back
           </Button>
           <div className="space-y-8 flex-grow">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              <h1 className="text-3xl font-bold text-black   dark:text-gray-100 mb-2">
                 Welcome Back
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-gray-400">
                 Please sign in to your admin account
               </p>
             </div>
             <LoginForm />
           </div>
-          <div className="mt-8 flex items-start gap-3 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <AlertTriangle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
-            <p className="text-gray-600 text-sm">
+          <div className="mt-8 flex items-start gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+            <AlertTriangle className="w-5 h-5 text-yellow-600 dark:text-yellow-500 flex-shrink-0 mt-0.5" />
+            <p className="text-gray-600 dark:text-gray-300 text-sm">
               This page is restricted to administrators only. If you are a user,
               please proceed to claim your coupon without logging in. Thank you
               for your understanding.

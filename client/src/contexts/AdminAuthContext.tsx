@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { validateAdmin } from "../api.clients";
 import { IAdmin } from "../../../server/src/shared/types";
-
+import { useQuery } from "@tanstack/react-query";
 interface AdminAuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -17,12 +17,19 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [admin, setAdmin] = useState<IAdmin | null>(null);
-
+  const { isError } = useQuery({
+    queryKey: ["validate-admin"],
+    queryFn: validateAdmin,
+  });
   const checkAuth = async () => {
     try {
       const data = await validateAdmin();
-      setIsAuthenticated(true);
-      setAdmin(data.admin);
+      if (isError) {
+        setIsAuthenticated(false);
+      } else {
+        setIsAuthenticated(true);
+        setAdmin(data.admin);
+      }
     } catch (error) {
       console.error(error);
       setIsAuthenticated(false);
@@ -33,11 +40,6 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     checkAuth();
-
-    // Set up periodic checks (every 5 minutes)
-    const interval = setInterval(checkAuth, 5 * 60 * 1000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (

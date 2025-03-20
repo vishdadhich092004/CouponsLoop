@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { use, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ChevronRight, Menu } from "lucide-react";
-
+import { useAdminAuth } from "@/contexts/AdminAuthContext";
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-
+  const { isAuthenticated } = useAdminAuth();
+  const navigate = useNavigate();
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 10) {
@@ -17,6 +18,13 @@ export function Header() {
       }
     });
   }
+  const handleAdminLogin = () => {
+    if (isAuthenticated) {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/admin/login");
+    }
+  };
 
   return (
     <motion.header
@@ -118,12 +126,12 @@ export function Header() {
         <div className="flex items-center gap-4">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button asChild className="hidden md:inline-flex">
-              <Link to="/admin">
+              <Button onClick={handleAdminLogin}>
                 Admin{" "}
                 <span className="text-xs">
                   <ChevronRight />
                 </span>
-              </Link>
+              </Button>
             </Button>
           </motion.div>
           <Sheet>
@@ -160,7 +168,9 @@ export function Header() {
                   Contact
                 </Link>
                 <Button asChild className="mt-4">
-                  <Link to="/admin">
+                  <Link
+                    to={isAuthenticated ? "/admin/dashboard" : "/admin/login"}
+                  >
                     Admin{" "}
                     <span className="text-xs">
                       <ChevronRight />
