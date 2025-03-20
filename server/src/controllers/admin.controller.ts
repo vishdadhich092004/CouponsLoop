@@ -77,7 +77,14 @@ export const validateAdmin = async (
   try {
     const { admin } = req;
     if (!admin) return res.status(401).json({ message: "Invalid credentials" });
-    const adminUser = await Admin.findById(admin.id);
+
+    const adminUser = await Admin.findOne({
+      _id: admin.id,
+      sessionId: admin.sessionId,
+    }).select("-password");
+
+    if (!adminUser) return res.status(401).json({ message: "Admin not found" });
+
     res.status(200).json({ admin: adminUser });
   } catch (error) {
     console.error(error);

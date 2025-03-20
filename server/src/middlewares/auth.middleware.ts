@@ -28,6 +28,17 @@ export const protectAdmin = async (
       id: string;
       sessionId: string;
     };
+
+    // Verify admin exists in database
+    const admin: IAdmin | null = await Admin.findOne({
+      _id: decoded.id,
+      sessionId: decoded.sessionId,
+    });
+
+    if (!admin) {
+      return res.status(401).json({ message: "Admin not found" });
+    }
+
     req.admin = decoded;
     next();
   } catch (error) {
