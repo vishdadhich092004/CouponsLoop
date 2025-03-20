@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 export const initSession = async () => {
   const response = await fetch(`${API_BASE_URL}/api/session/init`, {
-    method: "POST",
+    method: "GET",
     credentials: "include",
   });
   const data = await response.json();
