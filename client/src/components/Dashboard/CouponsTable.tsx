@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal, Trash, Eye } from "lucide-react";
 import { getAllCoupons, updateCouponStatus } from "@/api.clients";
-import { CouponStatus, type ICoupon } from "@/../../server/src/shared/types";
+import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 
 export function CouponsTable() {

@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getAllCoupons } from "@/api.clients";
-import { CouponStatus, type ICoupon } from "@/../../server/src/shared/types";
+import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 
 export function RecentCoupons() {

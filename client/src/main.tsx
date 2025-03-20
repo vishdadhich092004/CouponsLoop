@@ -10,8 +10,12 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
 const initializeApp = async () => {
-  if (!sessionStorage.getItem("session")) {
-    await initSession();
+  try {
+    if (!sessionStorage.getItem("session")) {
+      await initSession();
+    }
+  } catch (error) {
+    console.error("Failed to initialize session:", error);
   }
 };
 
@@ -27,7 +31,7 @@ const queryClient = new QueryClient({
 initializeApp().then(() => {
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
         <QueryClientProvider client={queryClient}>
           <CouponProvider>
             <AdminAuthProvider>

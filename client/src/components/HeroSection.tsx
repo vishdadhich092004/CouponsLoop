@@ -33,6 +33,7 @@ export function HeroSection() {
   const [timeLeft, setTimeLeft] = useState(
     couponData?.userClaim ? couponLeftTime(couponData.userClaim) : "00:00"
   );
+
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft(

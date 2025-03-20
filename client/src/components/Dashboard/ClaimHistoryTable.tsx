@@ -8,7 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { claimHistory } from "@/api.clients";
-import type { IUserClaim } from "@/../../server/src/shared/types";
+import { IUserClaim } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 
 export function ClaimHistoryTable() {

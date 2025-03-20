@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { claimHistory } from "@/api.clients";
-import type { IUserClaim } from "@/../../server/src/shared/types";
+import { IUserClaim } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 
 export function RecentClaims() {

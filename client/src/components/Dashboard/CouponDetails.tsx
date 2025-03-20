@@ -24,7 +24,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { getCouponById, updateCoupon, updateCouponStatus } from "@/api.clients";
-import { CouponStatus, type ICoupon } from "@/../../server/src/shared/types";
+import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 import { titleCase } from "@/utils/titleCase";
 export function CouponDetails({ id }: { id: string }) {

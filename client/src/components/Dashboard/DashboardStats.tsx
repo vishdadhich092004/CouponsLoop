@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Ticket, CheckCircle, AlertCircle } from "lucide-react";
 import { getAllCoupons } from "@/api.clients";
-import { CouponStatus, type ICoupon } from "@/../../server/src/shared/types";
+import { CouponStatus, ICoupon } from "@/types/types";
 
 export function DashboardStats() {
   const [stats, setStats] = useState({
