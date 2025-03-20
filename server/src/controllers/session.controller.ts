@@ -22,9 +22,8 @@ export const initSession = async (
     res.cookie("sessionId", sessionId, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
       maxAge: COOKIE_MAX_AGE,
-      path: "/",
+      sameSite: "lax",
     });
 
     // Verify cookie was set
