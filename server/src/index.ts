@@ -15,7 +15,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.set("trust proxy", true);
 connectDB();
 
 app.use("/api", allRoutes);

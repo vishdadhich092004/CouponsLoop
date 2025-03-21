@@ -3,6 +3,7 @@ import UserClaim from "../models/UserClaim";
 import Coupon from "../models/Coupon";
 import mongoose from "mongoose";
 import { CouponStatus } from "../shared/types";
+import { getClientIp } from "request-ip";
 const COOLDOWN_TIME = 1000 * 60 * 60 * 24; // 24 hours
 
 export const claimCoupon = async (
@@ -14,15 +15,21 @@ export const claimCoupon = async (
   session.startTransaction();
 
   try {
-    const userIP = (
-      req.ip ||
-      req.headers["x-forwarded-for"] ||
-      "unknown"
-    ).toString();
+    // Vercel-specific IP handling
+    const userIP =
+      (req.headers["x-forwarded-for"] as string) ||
+      (req.headers["x-real-ip"] as string) ||
+      getClientIp(req);
+
+    console.log("Headers:", req.headers); // For debugging
+    console.log("Raw IP:", userIP);
+
     const sessionId = req.cookies.sessionId || "unknown";
 
-    // Handle IPv6 loopback address
-    const normalizedIP = userIP === "::1" ? "127.0.0.1" : userIP;
+    // If userIP is a comma-separated list, take the first IP
+    const normalizedIP = userIP?.split(",")[0]?.trim() || "unknown";
+
+    console.log("Normalized IP:", normalizedIP);
 
     if (!normalizedIP || normalizedIP === "unknown") {
       return res.status(400).json({
