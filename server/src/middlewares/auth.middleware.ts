@@ -1,48 +1,38 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import Admin from "../models/Admin";
-import { IAdmin } from "../shared/types";
+
+export interface JWTAdmin {
+  userId: string;
+  username: string;
+}
+
 declare global {
   namespace Express {
     interface Request {
-      admin: {
-        id: string;
-        sessionId: string;
-      };
+      admin?: JWTAdmin;
     }
   }
 }
 
-export const protectAdmin = async (
+export const verifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction
-): Promise<any> => {
+): Promise<void> => {
   const token = req.cookies["auth_token"];
   if (!token) {
-    return res.status(401).json({ message: "Access Denied. No token" });
+    res.status(401).json({ message: "Unauthorized" });
+    return;
   }
-
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as {
-      id: string;
-      sessionId: string;
-    };
-
-    // Verify admin exists in database
-    const admin: IAdmin | null = await Admin.findOne({
-      _id: decoded.id,
-      sessionId: decoded.sessionId,
-    });
-
-    if (!admin) {
-      return res.status(401).json({ message: "Admin not found" });
-    }
-
-    req.admin = decoded;
+    const decode = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY as string
+    ) as JWTAdmin;
+    req.admin = decode;
     next();
-  } catch (error) {
-    console.error(error);
-    return res.status(401).json({ message: "Invalid Token" });
+  } catch (e) {
+    console.error(e);
+    res.status(403).json({ message: "Forbidden, Invalid Token" });
   }
 };

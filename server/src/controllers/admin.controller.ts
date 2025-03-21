@@ -4,12 +4,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { IAdmin } from "../shared/types";
 
-const generateToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET_KEY as string, {
-    expiresIn: "1d",
-  });
-};
-
 export const adminLogin = async (req: Request, res: Response): Promise<any> => {
   try {
     const { username, password } = req.body;
@@ -18,8 +12,19 @@ export const adminLogin = async (req: Request, res: Response): Promise<any> => {
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
-    res.cookie("auth_token", generateToken(admin._id.toString()), {
+
+    const token = jwt.sign(
+      {
+        username: admin.username,
+        userId: admin._id.toString(),
+      },
+      process.env.JWT_SECRET_KEY as string,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("auth_token", token, {
       httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
       maxAge: 1 * 24 * 60 * 60 * 1000,
     });
@@ -75,19 +80,15 @@ export const validateAdmin = async (
   res: Response
 ): Promise<any> => {
   try {
-    const { admin } = req;
-    if (!admin) return res.status(401).json({ message: "Invalid credentials" });
-
-    const adminUser = await Admin.findOne({
-      _id: admin.id,
-      sessionId: admin.sessionId,
-    }).select("-password");
-
-    if (!adminUser) return res.status(401).json({ message: "Admin not found" });
-
-    res.status(200).json({ admin: adminUser });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    const userId = req.admin?.userId;
+    if (!userId) return res.status(401).json({ message: "AdminId not found" });
+    const admin = await Admin.findById(userId);
+    if (!admin) return res.status(401).json({ message: "Admin not found" });
+    const adminWithoutPassword = admin.toObject() as Partial<IAdmin>;
+    delete adminWithoutPassword.password;
+    res.status(200).json({ admin: adminWithoutPassword });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Issue in validating admin" });
   }
 };

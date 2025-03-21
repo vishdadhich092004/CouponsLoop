@@ -10,12 +10,11 @@ import { ThemeProvider } from "@/components/theme-provider";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: 0,
     },
   },
 });
 
-// Call initialization before rendering
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">

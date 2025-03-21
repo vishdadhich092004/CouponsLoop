@@ -1,60 +1,48 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { validateAdmin } from "../api.clients";
-import { IAdmin } from "../../../server/src/shared/types";
+import { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
-interface AdminAuthContextType {
+import { validateAdmin } from "../api.clients";
+
+type Admin = {
+  username: string;
+  userId: string;
+};
+
+type AdminAuthContextType = {
+  admin: Admin | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
-  checkAuth: () => Promise<void>;
-  admin: IAdmin | null;
-}
+  refetchUser: () => void;
+};
 
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(
   undefined
 );
 
-export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [admin, setAdmin] = useState<IAdmin | null>(null);
-  const { isError } = useQuery({
+export const useAdminAuth = () => {
+  const context = useContext(AdminAuthContext);
+  if (!context) {
+    throw new Error("useAdminAuth must be used within a AdminAuthProvider");
+  }
+  return context;
+};
+
+type AdminAuthProviderProps = {
+  children: React.ReactNode;
+};
+
+export const AdminAuthProvider = ({ children }: AdminAuthProviderProps) => {
+  const { data, refetch } = useQuery({
     queryKey: ["validate-admin"],
     queryFn: validateAdmin,
+    retry: false,
   });
-  const checkAuth = async () => {
-    try {
-      const data = await validateAdmin();
-      if (isError) {
-        setIsAuthenticated(false);
-      } else {
-        setIsAuthenticated(true);
-        setAdmin(data.admin);
-      }
-    } catch (error) {
-      console.error(error);
-      setIsAuthenticated(false);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
+  const user = data?.admin;
+  const isAuthenticated = Boolean(user);
 
   return (
     <AdminAuthContext.Provider
-      value={{ isAuthenticated, isLoading, checkAuth, admin }}
+      value={{ admin: user, isAuthenticated, refetchUser: refetch }}
     >
       {children}
     </AdminAuthContext.Provider>
   );
-}
-
-export function useAdminAuth() {
-  const context = useContext(AdminAuthContext);
-  if (context === undefined) {
-    throw new Error("useAdminAuth must be used within an AdminAuthProvider");
-  }
-  return context;
-}
+};

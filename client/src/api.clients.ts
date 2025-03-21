@@ -58,6 +58,7 @@ export const validateAdmin = async () => {
   });
   const data = await response.json();
   if (!response.ok) {
+    console.error(data.message);
     throw new Error(data.message);
   }
   return data;

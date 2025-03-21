@@ -8,22 +8,16 @@ interface ProtectedAdminRouteProps {
 }
 
 export function ProtectedAdminRoute({ children }: ProtectedAdminRouteProps) {
-  const { isAuthenticated, isLoading } = useAdminAuth();
+  const { isAuthenticated } = useAdminAuth();
   const hasToken = Cookies.get("auth_token");
 
   // Add effect to show error message when authentication fails
   useEffect(() => {
-    if (!isLoading && !isAuthenticated && !hasToken) {
+    if (!isAuthenticated && !hasToken) {
       toast.error("You must be logged in to access this page");
     }
-  }, [isAuthenticated, isLoading, hasToken]);
+  }, [isAuthenticated, hasToken]);
 
-  // Show loading state while checking authentication
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  // Redirect to login if neither authenticated nor has token
   if (!isAuthenticated && !hasToken) {
     return <Navigate to="/admin/login" replace />;
   }
