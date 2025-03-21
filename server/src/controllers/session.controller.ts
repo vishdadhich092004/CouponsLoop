@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 const COOKIE_MAX_AGE = 1000 * 60 * 60 * 24 * 365; // 1 year
 
@@ -10,32 +11,28 @@ export const initSession = async (
   try {
     const sessionId = crypto.randomBytes(32).toString("hex");
 
-    res.cookie("sessionId", sessionId, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: COOKIE_MAX_AGE,
-      path: "/",
-      domain:
-        process.env.NODE_ENV === "production"
-          ? process.env.COOKIE_DOMAIN
-          : undefined,
-    });
-    console.log("Session initialized", sessionId);
-    // Verify cookie was set
-    if (!res.headersSent) {
-      res.json({
-        message: "Session initialized",
+    const token = jwt.sign(
+      {
         sessionId,
-      });
-    } else {
-      throw new Error("Headers already sent before cookie could be set");
-    }
+      },
+      process.env.JWT_SECRET_KEY as string,
+      { expiresIn: "1d" }
+    );
+
+    res.cookie("sessionId", token, {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: COOKIE_MAX_AGE,
+    });
+    res.status(200).json({
+      message: "Session initialized",
+      sessionId,
+    });
   } catch (error) {
-    console.error("Session initialization error:", error);
+    console.error(error);
     res.status(500).json({
       message: "Failed to initialize session",
-      error: (error as Error).message,
     });
   }
 };

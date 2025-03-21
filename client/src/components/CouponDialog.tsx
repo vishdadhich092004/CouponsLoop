@@ -62,7 +62,6 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
-  console.log(couponData);
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">

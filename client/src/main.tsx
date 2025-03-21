@@ -7,6 +7,12 @@ import { CouponProvider } from "./contexts/CouponContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { initSession } from "@/api.clients";
+
+const init = async () => {
+  await initSession();
+};
+init();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
