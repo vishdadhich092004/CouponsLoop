@@ -20,6 +20,7 @@ import { MoreHorizontal, Trash, Eye } from "lucide-react";
 import { getAllCoupons, updateCouponStatus } from "@/api.clients";
 import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function CouponsTable() {
   const [coupons, setCoupons] = useState<ICoupon[]>([]);
@@ -63,7 +64,46 @@ export function CouponsTable() {
   };
 
   if (loading) {
-    return <div>Loading coupons...</div>;
+    return (
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Code</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead>Claimed By</TableHead>
+              <TableHead>Claimed At</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[...Array(5)].map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[80px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[120px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[120px]" />
+                </TableCell>
+                <TableCell className="text-right">
+                  <Skeleton className="h-8 w-8 ml-auto" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
   }
 
   return (

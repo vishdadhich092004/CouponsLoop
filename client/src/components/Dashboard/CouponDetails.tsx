@@ -27,6 +27,8 @@ import { getCouponById, updateCoupon, updateCouponStatus } from "@/api.clients";
 import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
 import { titleCase } from "@/utils/titleCase";
+import { Skeleton } from "@/components/ui/skeleton";
+
 export function CouponDetails({ id }: { id: string }) {
   const [coupon, setCoupon] = useState<ICoupon | null>(null);
   const [loading, setLoading] = useState(true);
@@ -99,11 +101,48 @@ export function CouponDetails({ id }: { id: string }) {
   };
 
   if (loading) {
-    return <div>Loading coupon details...</div>;
+    return (
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            <Skeleton className="h-8 w-[200px]" />
+            <Skeleton className="h-6 w-[100px]" />
+          </CardTitle>
+          <CardDescription>
+            <Skeleton className="h-4 w-[150px]" />
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[100px]" />
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-6 w-[150px]" />
+              <Skeleton className="h-9 w-[100px]" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-4 w-[100px]" />
+                <Skeleton className="h-4 w-[150px]" />
+              </div>
+            ))}
+          </div>
+        </CardContent>
+        <CardFooter className="flex justify-between">
+          <Skeleton className="h-9 w-[150px]" />
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-[120px]" />
+            <Skeleton className="h-9 w-[120px]" />
+          </div>
+        </CardFooter>
+      </Card>
+    );
   }
 
   if (!coupon) {
-    return <div>Coupon not found</div>;
+    return <div>Coupon is houdini</div>;
   }
 
   return (

@@ -26,7 +26,6 @@ export function DashboardHeader() {
       <div className="ml-auto flex items-center gap-4">
         <ModeToggle />
         <div className="flex items-center gap-2">
-          {/* <div className="h-8 w-8 rounded-full bg-accent" /> */}
           <div>
             <p className="text-sm font-medium">{admin?.username}</p>
           </div>

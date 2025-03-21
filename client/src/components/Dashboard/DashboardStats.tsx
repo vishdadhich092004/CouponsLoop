@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Ticket, CheckCircle, AlertCircle } from "lucide-react";
 import { getAllCoupons } from "@/api.clients";
 import { CouponStatus, ICoupon } from "@/types/types";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function DashboardStats() {
   const [stats, setStats] = useState({
@@ -47,9 +48,11 @@ export function DashboardStats() {
           <Ticket className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {loading ? "Loading..." : stats.total}
-          </div>
+          {loading ? (
+            <Skeleton className="h-8 w-[100px]" />
+          ) : (
+            <div className="text-2xl font-bold">{stats.total}</div>
+          )}
         </CardContent>
       </Card>
       <Card>
@@ -58,9 +61,11 @@ export function DashboardStats() {
           <div className="h-4 w-4 rounded-full bg-green-500" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {loading ? "Loading..." : stats.available}
-          </div>
+          {loading ? (
+            <Skeleton className="h-8 w-[100px]" />
+          ) : (
+            <div className="text-2xl font-bold">{stats.available}</div>
+          )}
         </CardContent>
       </Card>
       <Card>
@@ -69,9 +74,11 @@ export function DashboardStats() {
           <CheckCircle className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {loading ? "Loading..." : stats.claimed}
-          </div>
+          {loading ? (
+            <Skeleton className="h-8 w-[100px]" />
+          ) : (
+            <div className="text-2xl font-bold">{stats.claimed}</div>
+          )}
         </CardContent>
       </Card>
       <Card>
@@ -80,9 +87,11 @@ export function DashboardStats() {
           <AlertCircle className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">
-            {loading ? "Loading..." : stats.expired}
-          </div>
+          {loading ? (
+            <Skeleton className="h-8 w-[100px]" />
+          ) : (
+            <div className="text-2xl font-bold">{stats.expired}</div>
+          )}
         </CardContent>
       </Card>
     </div>

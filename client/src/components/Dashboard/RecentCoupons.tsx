@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { getAllCoupons } from "@/api.clients";
 import { CouponStatus, ICoupon } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function RecentCoupons() {
   const [coupons, setCoupons] = useState<ICoupon[]>([]);
@@ -53,7 +54,18 @@ export function RecentCoupons() {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p>Loading recent coupons...</p>
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="space-y-3">
+                <Skeleton className="h-4 w-[200px]" />
+                <div className="flex gap-2">
+                  <Skeleton className="h-4 w-[80px]" />
+                  <Skeleton className="h-3 w-[120px]" />
+                </div>
+              </div>
+            ))}
+            <Skeleton className="h-8 w-full" />
+          </div>
         ) : coupons.length === 0 ? (
           <p>No coupons found</p>
         ) : (

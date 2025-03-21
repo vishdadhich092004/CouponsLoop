@@ -10,7 +10,7 @@ import {
 import { claimHistory } from "@/api.clients";
 import { IUserClaim } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
-
+import { Skeleton } from "@/components/ui/skeleton";
 export function ClaimHistoryTable() {
   const [claims, setClaims] = useState<IUserClaim[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,7 +31,42 @@ export function ClaimHistoryTable() {
   }, []);
 
   if (loading) {
-    return <div>Loading claim history...</div>;
+    return (
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Session ID</TableHead>
+              <TableHead>IP Address</TableHead>
+              <TableHead>Coupon ID</TableHead>
+              <TableHead>Claimed At</TableHead>
+              <TableHead>Created At</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[...Array(5)].map((_, index) => (
+              <TableRow key={index}>
+                <TableCell>
+                  <Skeleton className="h-4 w-[200px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[120px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[150px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+                <TableCell>
+                  <Skeleton className="h-4 w-[100px]" />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
   }
 
   return (

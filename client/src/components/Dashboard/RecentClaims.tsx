@@ -9,6 +9,7 @@ import {
 import { claimHistory } from "@/api.clients";
 import { IUserClaim } from "@/types/types";
 import { formatDate } from "@/utils/format.data";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function RecentClaims() {
   const [claims, setClaims] = useState<IUserClaim[]>([]);
@@ -37,7 +38,20 @@ export function RecentClaims() {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p>Loading recent claims...</p>
+          <div className="space-y-4">
+            {[...Array(5)].map((_, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0"
+              >
+                <div className="space-y-1">
+                  <Skeleton className="h-4 w-[200px] animate-pulse" />
+                  <Skeleton className="h-3 w-[120px] animate-pulse" />
+                </div>
+                <Skeleton className="h-4 w-[80px] animate-pulse" />
+              </div>
+            ))}
+          </div>
         ) : claims.length === 0 ? (
           <p>No claims found</p>
         ) : (
