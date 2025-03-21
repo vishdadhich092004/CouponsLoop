@@ -26,7 +26,7 @@ export function CouponDialog({ isOpen, onOpenChange }: CouponDialogProps) {
   const [timeLeft, setTimeLeft] = useState("00:00:00");
 
   useEffect(() => {
-    if (!couponData?.userClaim?.length) return;
+    if (!couponData?.userClaim) return;
 
     setTimeLeft(couponLeftTime(couponData.userClaim));
     const timer = setInterval(() => {

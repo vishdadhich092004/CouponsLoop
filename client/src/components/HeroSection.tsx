@@ -33,16 +33,16 @@ export function HeroSection() {
   const [timeLeft, setTimeLeft] = useState("00:00:00");
 
   useEffect(() => {
-    if (!couponData?.userClaim?.length) return;
+    if (!couponData?.userClaim) return;
 
     setTimeLeft(couponLeftTime(couponData.userClaim));
     const timer = setInterval(() => {
       setTimeLeft(couponLeftTime(couponData.userClaim));
     }, 1000);
-
     return () => clearInterval(timer);
   }, [couponData?.userClaim]);
 
+  console.log(couponData);
   return (
     <section className="relative overflow-hidden py-20 md:py-28" id="hero">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-background z-0" />
@@ -145,7 +145,7 @@ export function HeroSection() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.7 }}
               >
-                {couponData?.userClaim?.length ? (
+                {couponData?.userClaim ? (
                   <>
                     <p className="text-sm font-medium">Next refresh in</p>
                     <p className="text-xl font-bold">{timeLeft}</p>

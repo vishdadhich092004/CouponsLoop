@@ -1,10 +1,10 @@
 import { IUserClaim } from "@/types/types";
 
-export const couponLeftTime = (userClaim: IUserClaim[]) => {
-  if (!userClaim?.length) return "00:00:00";
+export const couponLeftTime = (userClaim: IUserClaim) => {
+  if (!userClaim) return "00:00:00";
 
   const now = new Date();
-  const endDate = new Date(userClaim[0].lastClaimedAt);
+  const endDate = new Date(userClaim.lastClaimedAt);
   endDate.setHours(endDate.getHours() + 24);
   const diffTime = endDate.getTime() - now.getTime();
 
