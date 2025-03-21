@@ -23,6 +23,11 @@ export function LoginForm() {
     },
   });
 
+  const handleAutofill = () => {
+    loginFormData.setValue("username", "loopadmin");
+    loginFormData.setValue("password", "admin@2025");
+  };
+
   const queryClient = useQueryClient();
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginFormData) =>
@@ -45,6 +50,16 @@ export function LoginForm() {
   return (
     <form className="space-y-6 w-full max-w-md" onSubmit={handleSubmit}>
       <div className="space-y-4">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleAutofill}
+            className="text-sm"
+          >
+            Autofill Test Data
+          </Button>
+        </div>
         <div>
           <Label
             htmlFor="username"
