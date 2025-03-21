@@ -11,6 +11,14 @@ export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated } = useAdminAuth();
   const navigate = useNavigate();
+
+  const handleScroll = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 10) {
@@ -40,7 +48,10 @@ export function Header() {
       transition={{ duration: 0.5 }}
     >
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/" className="flex items-center gap-2">
+        <button
+          onClick={() => handleScroll("hero")}
+          className="flex items-center gap-2 cursor-pointer "
+        >
           <motion.div
             whileHover={{ rotate: 10 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -78,51 +89,51 @@ export function Header() {
             </svg>
           </motion.div>
           <span className="text-xl font-bold">CouponsLoop</span>
-        </Link>
+        </button>
         <nav className="hidden md:flex gap-6">
           <motion.div
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Link
-              to="#features"
-              className="text-sm font-medium hover:text-primary"
+            <button
+              onClick={() => handleScroll("features")}
+              className="text-sm font-medium hover:text-primary cursor-pointer"
             >
               Features
-            </Link>
+            </button>
           </motion.div>
           <motion.div
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Link
-              to="#how-it-works"
-              className="text-sm font-medium hover:text-primary"
+            <button
+              onClick={() => handleScroll("how-it-works")}
+              className="text-sm font-medium hover:text-primary cursor-pointer"
             >
               How It Works
-            </Link>
+            </button>
           </motion.div>
           <motion.div
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Link
-              to="/#testimonials"
-              className="text-sm font-medium hover:text-primary"
+            <button
+              onClick={() => handleScroll("testimonials")}
+              className="text-sm font-medium hover:text-primary cursor-pointer"
             >
               Testimonials
-            </Link>
+            </button>
           </motion.div>
           <motion.div
             whileHover={{ y: -2 }}
             transition={{ type: "spring", stiffness: 400, damping: 10 }}
           >
-            <Link
-              to="#contact"
-              className="text-sm font-medium hover:text-primary"
+            <button
+              onClick={() => handleScroll("contact")}
+              className="text-sm font-medium hover:text-primary cursor-pointer"
             >
               Contact
-            </Link>
+            </button>
           </motion.div>
         </nav>
         <div className="flex items-center gap-4">
@@ -146,30 +157,30 @@ export function Header() {
             </SheetTrigger>
             <SheetContent side="right">
               <nav className="flex flex-col gap-4 mt-8 px-4">
-                <Link
-                  to="#features"
-                  className="text-sm font-medium hover:text-primary"
+                <button
+                  onClick={() => handleScroll("features")}
+                  className="text-sm font-medium hover:text-primary cursor-pointer text-left"
                 >
                   Features
-                </Link>
-                <Link
-                  to="#how-it-works"
-                  className="text-sm font-medium hover:text-primary"
+                </button>
+                <button
+                  onClick={() => handleScroll("how-it-works")}
+                  className="text-sm font-medium hover:text-primary cursor-pointer text-left"
                 >
                   How It Works
-                </Link>
-                <Link
-                  to="#testimonials"
-                  className="text-sm font-medium hover:text-primary"
+                </button>
+                <button
+                  onClick={() => handleScroll("testimonials")}
+                  className="text-sm font-medium hover:text-primary cursor-pointer text-left"
                 >
                   Testimonials
-                </Link>
-                <Link
-                  to="#contact"
-                  className="text-sm font-medium hover:text-primary"
+                </button>
+                <button
+                  onClick={() => handleScroll("contact")}
+                  className="text-sm font-medium hover:text-primary cursor-pointer text-left"
                 >
                   Contact
-                </Link>
+                </button>
                 <Button asChild className="mt-4">
                   <Link
                     to={isAuthenticated ? "/admin/dashboard" : "/admin/login"}
