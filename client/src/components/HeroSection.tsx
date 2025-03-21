@@ -42,7 +42,6 @@ export function HeroSection() {
     return () => clearInterval(timer);
   }, [couponData?.userClaim]);
 
-  console.log(couponData);
   return (
     <section className="relative overflow-hidden py-20 md:py-28" id="hero">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-background z-0" />
