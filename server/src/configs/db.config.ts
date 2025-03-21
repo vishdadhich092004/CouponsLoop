@@ -12,14 +12,11 @@ const connectDB = async () => {
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
 
-    // Add error handler for after initial connection
     mongoose.connection.on("error", (err) => {
       console.error("MongoDB connection error:", err);
     });
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
-    // Log more details about the connection attempt
-    console.log("MongoDB URI:", process.env.MONGODB_URI?.split("@")[1]); // Log URI without credentials
     process.exit(1);
   }
 };

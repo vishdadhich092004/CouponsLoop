@@ -6,6 +6,9 @@ import { CouponDialog } from "@/components/CouponDialog";
 import { useCoupon } from "@/contexts/CouponContext";
 import { couponLeftTime } from "@/utils/coupon.left.time";
 import { BackgroundBeams } from "./ui/background-beams";
+import handshake from "@/media/handshake.jpg";
+import heroimg from "@/media/heroimg.jpg";
+
 export function HeroSection() {
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -93,7 +96,7 @@ export function HeroSection() {
                     className="w-8 h-8 rounded-full border-2 border-background bg-muted overflow-hidden"
                   >
                     <img
-                      src={`https://fetchpik.com/images/fetchpik.com-LHoBMg1PG6.jpg`}
+                      src={handshake}
                       alt={`User ${i}`}
                       width={32}
                       height={32}
@@ -117,7 +120,7 @@ export function HeroSection() {
             <div className="relative h-[350px] md:h-[500px] w-full overflow-hidden rounded-lg">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-primary/5 z-10 rounded-lg" />
               <img
-                src="https://fetchpik.com/images/fetchpik.com-np5bNUrB6P.jpg"
+                src={heroimg}
                 alt="Coupons showcase"
                 className="object-cover"
               />

@@ -21,15 +21,9 @@ export const claimCoupon = async (
       (req.headers["x-real-ip"] as string) ||
       getClientIp(req);
 
-    console.log("Headers:", req.headers); // For debugging
-    console.log("Raw IP:", userIP);
-
     const sessionId = req.cookies.sessionId || "unknown";
 
-    // If userIP is a comma-separated list, take the first IP
     const normalizedIP = userIP?.split(",")[0]?.trim() || "unknown";
-
-    console.log("Normalized IP:", normalizedIP);
 
     if (!normalizedIP || normalizedIP === "unknown") {
       return res.status(400).json({
