@@ -32,7 +32,7 @@ export function Header() {
     <motion.header
       className={`sticky top-0 z-50 w-full ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-sm dark:bg-gray-950/80"
+          ? "bg-transparent backdrop-blur-md shadow-sm dark:bg-transparent"
           : "bg-transparent"
       } transition-all duration-200`}
       initial={{ y: -100 }}
