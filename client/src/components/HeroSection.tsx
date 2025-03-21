@@ -33,11 +33,10 @@ export function HeroSection() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { couponData } = useCoupon();
-  const [timeLeft, setTimeLeft] = useState("00:00:00");
+  const [timeLeft, setTimeLeft] = useState("23:59:59");
 
   useEffect(() => {
     if (!couponData?.userClaim) return;
-
     setTimeLeft(couponLeftTime(couponData.userClaim));
     const timer = setInterval(() => {
       setTimeLeft(couponLeftTime(couponData.userClaim));

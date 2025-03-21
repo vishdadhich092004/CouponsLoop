@@ -10,7 +10,7 @@ const connectDB = async () => {
       socketTimeoutMS: 45000, // Socket timeout
     });
 
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log("MongoDB Connected");
 
     mongoose.connection.on("error", (err) => {
       console.error("MongoDB connection error:", err);
