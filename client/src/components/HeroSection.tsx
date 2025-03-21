@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { CouponDialog } from "@/components/CouponDialog";
 import { useCoupon } from "@/contexts/CouponContext";
@@ -29,6 +28,13 @@ export function HeroSection() {
         duration: 0.5,
       },
     },
+  };
+
+  const handleScroll = (elementId: string) => {
+    const element = document.getElementById(elementId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -80,8 +86,12 @@ export function HeroSection() {
               >
                 Get Your Coupon
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="#how-it-works">How It Works</Link>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => handleScroll("how-it-works")}
+              >
+                How It Works
               </Button>
             </motion.div>
             <motion.div
